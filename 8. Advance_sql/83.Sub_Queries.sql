@@ -1,0 +1,76 @@
+-- A Subquery or Inner Query or a Nested Query is a query within another SQL Query . It involves 2 select statment 
+
+CREATE TABLE CUSTOMER(
+CUS_ID INT PRIMARY KEY,
+NAME VARCHAR(50),
+CITY VARCHAR(50)
+);
+
+
+INSERT INTO CUSTOMER 
+VALUES
+(1,'ALICE','MUMBAI'),
+(2,'BOB','DELHI'),
+(3,'CHARLIE','BANGLORE'),
+(4,'DAVID','MUMBAI');
+
+CREATE TABLE ORDERS(
+ORDER_ID INT PRIMARY KEY,
+CUS_ID INT,
+AMOUNT INT
+);
+
+INSERT INTO ORDERS VALUES
+(101,1,500),
+(102,1,900),
+(103,2,300),
+(104,5,700);
+
+SELECT * FROM CUSTOMER;
+SELECT * FROM ORDERS;
+
+-- Sub Queries with where 
+
+SELECT * 
+FROM ORDERS
+WHERE AMOUNT > (
+    SELECT AVG(AMOUNT)
+    FROM ORDERS
+);
+
+
+-- sub queries with select 
+
+SELECT NAME ,
+ (
+		SELECT COUNT(*)
+		FROM ORDERS O
+		WHERE O.CUS_ID = C.CUS_ID
+  ) AS ORDER_COUNT
+FROM CUSTOMER C;
+
+
+
+
+-- SUB QUERIES WITH FORM 
+SELECT 
+	SUMMARY.CUS_ID,
+    SUMMARY.avg_amount
+FROM
+	(
+		SELECT 
+			CUS_ID,
+			AVG(AMOUNT) AS avg_amount
+		FROM ORDERS 
+		GROUP BY CUS_ID 
+	) AS SUMMARY;
+
+
+
+
+
+
+
+
+
+
